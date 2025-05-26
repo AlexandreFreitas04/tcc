@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import {useFonts} from 'expo-font';
 import Texto from './meuTexto';
 
@@ -20,17 +20,17 @@ export default function App() {
           <View style={styles.linha}>
             <Texto style={styles.textoFaltam}> FALTAM: </Texto>
 
-            <View style={styles.bloco}>
+            <View style={styles.blococronometro}>
               <Texto style={styles.numeroTempo}>72</Texto> 
               <Texto style={styles.unidadeTempo}>HORAS</Texto>
             </View>
 
-            <View style={styles.bloco}>
+            <View style={styles.blococronometro}>
               <Texto style={styles.numeroTempo}>00</Texto> 
               <Texto style={styles.unidadeTempo}>Minutos</Texto>
             </View>
 
-            <View style={styles.bloco}>
+            <View style={styles.blococronometro}>
               <Texto style={styles.numeroTempo}>00</Texto> 
               <Texto style={styles.unidadeTempo}>Segundos</Texto>
             </View>
@@ -43,23 +43,30 @@ export default function App() {
 
       </View>
 
-      <View style={styles.proxJogoSec}>
+      // ... (código anterior) ...
+      <View style={styles.proxJogoSec}> 
         <Texto style={styles.titulosSecao}> Meus Rachões </Texto>
-          <View style={styles.linha}>
-              <TouchableOpacity style={styles.bloco}>
-                <Texto>     Criar {'\n'} Rachão  </Texto>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.bloco}>
-                <Texto>     Futebol {'\n'} de Domingo  {'\n'} Ver Detalhes</Texto>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.bloco}>
-                <Texto>     Futebol {'\n'} de Domingo</Texto>
-                <Texto>Ver detalhes </Texto>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.bloco}>
-                <Texto>   Ver {'\n'} Todos </Texto>
-              </TouchableOpacity>
-          </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollRachoesContainer}>
+          <TouchableOpacity style={styles.bloco}>
+            <Texto style={styles.textoMeusRachoes}>Criar {'\n'} Rachão</Texto>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bloco}>
+            <Texto style={styles.textoMeusRachoes}>Futebol {'\n'} de Domingo</Texto>
+            <Texto style={styles.verDetalhe}>Ver Detalhes</Texto>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bloco}>
+            <Texto style={styles.textoMeusRachoes}>Futebol {'\n'} de Quarta</Texto> 
+            <Texto style={styles.verDetalhe}>Ver detalhes</Texto>
+          </TouchableOpacity>
+            <TouchableOpacity style={styles.bloco}>
+            <Texto style={styles.textoMeusRachoes}>Futebol {'\n'} de Segunda</Texto> 
+            <Texto style={styles.verDetalhe}>Ver detalhes</Texto>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bloco}>
+            <Texto style={styles.textoMeusRachoes}>Futebol {'\n'} de Sábado</Texto> 
+            <Texto style={styles.verDetalhe}>Ver detalhes</Texto>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
 
       {/*Meu Ultimo Jogo*/}
@@ -67,7 +74,7 @@ export default function App() {
 
       </View>
 
-      {/*Footer*/}
+      {/*Bottom Tabs*/}
       <View>
 
       </View>
@@ -102,14 +109,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textoFaltam: {
-    fontSize: 17,
+    fontSize: 18,
     marginTop: 20,
     marginLeft: 8
   },
   nomeRachao:{
     marginTop: 10
   },
-   bloco: {
+   blococronometro: {
     backgroundColor: '#2C2C2C',
     paddingHorizontal: 18,
     paddingVertical: 20,
@@ -117,7 +124,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 15,
     marginTop: 10 
-  }, 
+  },
+  bloco:{
+
+    backgroundColor: '#2C2C2C',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 15,
+    marginRight: 15,
+    marginLeft: 5, 
+    width: 95, 
+    height: 95, 
+    padding: 8,       
+  },
   numeroTempo: {
     fontSize: 20,
   },
@@ -129,5 +149,18 @@ const styles = StyleSheet.create({
     color: '#ffc107',
     marginLeft: 20,
     fontSize: 16
-  }
+  },
+  verDetalhe:{
+    color:'#ffc107',
+    fontSize: 12,
+  },
+  textoMeusRachoes:{
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  scrollRachoesContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    
+  },
 });
