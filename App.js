@@ -16,9 +16,31 @@ export default function App() {
       <View style={styles.proxJogoSec}>
         <Texto style={styles.titulosSecao}> Próxima Partida </Texto>
         <Texto style={styles.nomeRachao}>  Futebol de Domingo {/*futuramente aqui vai ser uma variavel*/} </Texto>
+
           <View style={styles.linhaCronometro}>
             <Texto style={styles.textoFaltam}> FALTAM: </Texto>
+
+            <View style={styles.blocoTempo}>
+              <Texto style={styles.numeroTempo}>72</Texto> 
+              <Texto style={styles.unidadeTempo}>HORAS</Texto>
+            </View>
+
+            <View style={styles.blocoTempo}>
+              <Texto style={styles.numeroTempo}>00</Texto> 
+              <Texto style={styles.unidadeTempo}>Minutos</Texto>
+            </View>
+
+            <View style={styles.blocoTempo}>
+              <Texto style={styles.numeroTempo}>00</Texto> 
+              <Texto style={styles.unidadeTempo}>Segundos</Texto>
+            </View>
+
+            <View>
+              <Texto>Ver Detalhes</Texto>
+            </View>
           </View>
+
+
       </View>
 
       {/*Meus Rachões*/}
@@ -68,9 +90,26 @@ const styles = StyleSheet.create({
   textoFaltam: {
     fontSize: 17,
     marginTop: 20,
-    marginLeft: 12
+    marginLeft: 8
   },
   nomeRachao:{
     marginTop: 10
-  }
+  },
+   blocoTempo: {
+    backgroundColor: '#2C2C2C',
+    paddingHorizontal: 18,
+    paddingVertical: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginLeft: 15,
+    marginTop: 10 
+  }, 
+  numeroTempo: {
+    fontSize: 20,
+  },
+  unidadeTempo: {
+    fontSize: 8,
+    textTransform: 'uppercase',
+  },
+
 });
