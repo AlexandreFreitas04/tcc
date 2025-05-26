@@ -35,9 +35,9 @@ export default function App() {
               <Texto style={styles.unidadeTempo}>Segundos</Texto>
             </View>
 
-            <View>
-              <Texto>Ver Detalhes</Texto>
-            </View>
+            <TouchableOpacity>
+              <Texto style={styles.verDetalheProxJogo}>Ver{'\n'}Detalhes</Texto>
+            </TouchableOpacity>
           </View>
 
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
   header:{
-    marginTop: 150, 
+    marginTop: 100, 
     alignItems: 'center'
   },
   proxJogoSec:{
@@ -111,5 +111,9 @@ const styles = StyleSheet.create({
     fontSize: 8,
     textTransform: 'uppercase',
   },
-
+  verDetalheProxJogo:{
+    color: '#ffc107',
+    marginLeft: 20,
+    fontSize: 16
+  }
 });
