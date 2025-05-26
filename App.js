@@ -12,11 +12,13 @@ export default function App() {
         <Texto style={styles.headerTexto}>Bem vindo Jogador!</Texto>
       </View>
 
-      {/*Seção Próxima partida*/}
+      {/*Próxima partida*/}
       <View style={styles.proxJogoSec}>
         <Texto style={styles.titulosSecao}> Próxima Partida </Texto>
         <Texto style={styles.nomeRachao}>  Futebol de Domingo {/*futuramente aqui vai ser uma variavel*/} </Texto>
-        <Texto> FALTAM: </Texto>
+          <View style={styles.linhaCronometro}>
+            <Texto style={styles.textoFaltam}> FALTAM: </Texto>
+          </View>
       </View>
 
       {/*Meus Rachões*/}
@@ -53,14 +55,22 @@ const styles = StyleSheet.create({
   proxJogoSec:{
     alignItems: 'center'
   },
-    titulosSecao:{
-    color:'white',
+  titulosSecao:{
     fontSize: 30,
-    fontFamily: 'Exo2-Bold',
     marginTop: 20
   },
+  linhaCronometro: { 
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  textoFaltam: {
+    fontSize: 17,
+    marginTop: 20,
+    marginLeft: 12
+  },
   nomeRachao:{
-    color:"white",
-    marginTop: 5
+    marginTop: 10
   }
 });
