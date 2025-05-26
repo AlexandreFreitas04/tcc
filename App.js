@@ -17,35 +17,49 @@ export default function App() {
         <Texto style={styles.titulosSecao}> Próxima Partida </Texto>
         <Texto style={styles.nomeRachao}>  Futebol de Domingo {/*futuramente aqui vai ser uma variavel*/} </Texto>
 
-          <View style={styles.linhaCronometro}>
+          <View style={styles.linha}>
             <Texto style={styles.textoFaltam}> FALTAM: </Texto>
 
-            <View style={styles.blocoTempo}>
+            <View style={styles.bloco}>
               <Texto style={styles.numeroTempo}>72</Texto> 
               <Texto style={styles.unidadeTempo}>HORAS</Texto>
             </View>
 
-            <View style={styles.blocoTempo}>
+            <View style={styles.bloco}>
               <Texto style={styles.numeroTempo}>00</Texto> 
               <Texto style={styles.unidadeTempo}>Minutos</Texto>
             </View>
 
-            <View style={styles.blocoTempo}>
+            <View style={styles.bloco}>
               <Texto style={styles.numeroTempo}>00</Texto> 
               <Texto style={styles.unidadeTempo}>Segundos</Texto>
             </View>
 
             <TouchableOpacity>
-              <Texto style={styles.verDetalheProxJogo}>Ver{'\n'}Detalhes</Texto>
+              <Texto style={styles.verDetalheProxJogo}>    Ver{'\n'}Detalhes</Texto>
             </TouchableOpacity>
           </View>
 
 
       </View>
 
-      {/*Meus Rachões*/}
-      <View>
-
+      <View style={styles.proxJogoSec}>
+        <Texto style={styles.titulosSecao}> Meus Rachões </Texto>
+          <View style={styles.linha}>
+              <TouchableOpacity style={styles.bloco}>
+                <Texto>     Criar {'\n'} Rachão  </Texto>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bloco}>
+                <Texto>     Futebol {'\n'} de Domingo  {'\n'} Ver Detalhes</Texto>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bloco}>
+                <Texto>     Futebol {'\n'} de Domingo</Texto>
+                <Texto>Ver detalhes </Texto>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bloco}>
+                <Texto>   Ver {'\n'} Todos </Texto>
+              </TouchableOpacity>
+          </View>
       </View>
 
       {/*Meu Ultimo Jogo*/}
@@ -79,9 +93,9 @@ const styles = StyleSheet.create({
   },
   titulosSecao:{
     fontSize: 30,
-    marginTop: 20
+    marginTop: 40
   },
-  linhaCronometro: { 
+  linha: { 
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -95,7 +109,7 @@ const styles = StyleSheet.create({
   nomeRachao:{
     marginTop: 10
   },
-   blocoTempo: {
+   bloco: {
     backgroundColor: '#2C2C2C',
     paddingHorizontal: 18,
     paddingVertical: 20,
