@@ -1,27 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import {useFonts} from 'expo-font';
+import Texto from './meuTexto';
 
 export default function App() {
-  useFonts({
-    'Jersey20': require('./assets/fonts/Jersey20-Regular.ttf'),
-    'Exo2-Bold': require('./assets/fonts/Exo_2/static/Exo2-Bold.ttf')
-  })
+
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTexto}>Bem vindo Jogador!</Text>
+        <Texto style={styles.headerTexto}>Bem vindo Jogador!</Texto>
       </View>
 
       {/*Seção Próxima partida*/}
-      <View>
-
+      <View style={styles.proxJogoSec}>
+        <Texto style={styles.titulosSecao}> Próxima Partida </Texto>
+        <Texto style={styles.nomeRachao}>  Futebol de Domingo {/*futuramente aqui vai ser uma variavel*/} </Texto>
+        <Texto> FALTAM: </Texto>
       </View>
 
       {/*Meus Rachões*/}
-      <View style={styles.proxJogoSec}>
-        <Text style={styles.titulosSecao}> Próxima Partida </Text>
+      <View>
+
       </View>
 
       {/*Meu Ultimo Jogo*/}
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
   headerTexto:{
     color: '#ffc107',
     fontSize: 40,
-    fontFamily: 'Exo2-Bold',
   },
   header:{
     marginTop: 150, 
@@ -53,5 +52,15 @@ const styles = StyleSheet.create({
   },
   proxJogoSec:{
     alignItems: 'center'
+  },
+    titulosSecao:{
+    color:'white',
+    fontSize: 30,
+    fontFamily: 'Exo2-Bold',
+    marginTop: 20
+  },
+  nomeRachao:{
+    color:"white",
+    marginTop: 5
   }
 });
