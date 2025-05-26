@@ -2,9 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import {useFonts} from 'expo-font';
 import Texto from './meuTexto';
+import { AntDesign } from '@expo/vector-icons';
+
 
 export default function App() {
-
+  useFonts({
+    'Jersey20': require('./assets/fonts/Jersey20-Regular.ttf'),
+    'Exo2-Bold': require('./assets/fonts/Exo_2/static/Exo2-Bold.ttf')
+  });
 
   return (
     <View style={styles.container}>
@@ -43,12 +48,14 @@ export default function App() {
 
       </View>
 
-      // ... (código anterior) ...
       <View style={styles.proxJogoSec}> 
         <Texto style={styles.titulosSecao}> Meus Rachões </Texto>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollRachoesContainer}>
           <TouchableOpacity style={styles.bloco}>
-            <Texto style={styles.textoMeusRachoes}>Criar {'\n'} Rachão</Texto>
+            <View style={styles.blococriar}>
+              <AntDesign name="pluscircle" size={24} color="white" style={styles.corIconAdd} />
+              <Texto style={styles.textoCriarRachao}>Criar {'\n'} Rachão</Texto>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.bloco}>
             <Texto style={styles.textoMeusRachoes}>Futebol {'\n'} de Domingo</Texto>
@@ -70,7 +77,8 @@ export default function App() {
       </View>
 
       {/*Meu Ultimo Jogo*/}
-      <View>
+      <View style={styles.proxJogoSec}>
+        <Texto style={styles.titulosSecao}> Meu Ultimo Jogo </Texto>
 
       </View>
 
@@ -99,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   titulosSecao:{
-    fontSize: 30,
+    fontSize: 28,
     marginTop: 40
   },
   linha: { 
@@ -118,8 +126,9 @@ const styles = StyleSheet.create({
   },
    blococronometro: {
     backgroundColor: '#2C2C2C',
-    paddingHorizontal: 18,
-    paddingVertical: 20,
+    width: 75, 
+    height: 80,
+    paddingTop:18,
     borderRadius: 5,
     alignItems: 'center',
     marginLeft: 15,
@@ -138,29 +147,45 @@ const styles = StyleSheet.create({
     height: 95, 
     padding: 8,       
   },
+  blococriar:{
+    flexDirection:'row',
+    alignItems: 'center',    
+    justifyContent: 'center',
+    width: '100%',          
+    height: '100%',          
+  },
   numeroTempo: {
-    fontSize: 20,
+    fontSize: 18,
   },
   unidadeTempo: {
-    fontSize: 8,
+    fontSize: 10,
     textTransform: 'uppercase',
   },
   verDetalheProxJogo:{
     color: '#ffc107',
-    marginLeft: 20,
-    fontSize: 16
+    marginLeft: 18,
+    fontSize: 14
   },
   verDetalhe:{
     color:'#ffc107',
-    fontSize: 12,
+    fontSize: 10,
   },
   textoMeusRachoes:{
-    fontSize: 14,
-    textAlign: 'center'
+    fontSize: 12,
+    textAlign: 'center', 
+    marginLeft: 5
   },
   scrollRachoesContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    
   },
+  corIconAdd:{
+    color: '#ffc107'
+  },
+  textoCriarRachao:{
+    color: '#ffc107',
+    fontSize: 12,
+    textAlign: 'center', 
+    marginLeft: 5
+  }
 });
