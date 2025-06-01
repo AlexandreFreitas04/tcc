@@ -1,10 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import styles from '../Projeto07/styles'
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import styles from '../estilos/buscarStyle';
+import Texto from '../meuTexto';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Buscar () {
   return (
-    <View>
+    <View style={styles.container}>
+      <View style={styles.barra}>
+        <Ionicons name="search" size={20} color='gray' style={styles.iconeBusca}/>
+        <TextInput 
+        style={styles.inputBuscar}
+        placeholder='Buscar'
+        placeholderTextColor='gray'
+        />
+      </View>
     </View>
   )
 }

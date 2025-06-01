@@ -22,7 +22,7 @@ export default function App() {
             paddingTop: 5,
             borderTopWidth: 0
           },
-          tabBarActiveTintColor: 'tomato',
+          tabBarActiveTintColor: '#ffc107',
           tabBarInactiveTintColor: 'gray',
           headerShown: false,
           tabBarLabelStyle:{
