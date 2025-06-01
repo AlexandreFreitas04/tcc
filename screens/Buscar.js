@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import styles from '../estilos/buscarStyle';
-import Texto from '../meuTexto';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Buscar () {

@@ -19,6 +19,7 @@ export default StyleSheet.create({
     marginRight: 10
   },
   inputBuscar: {
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Exo2-Bold'
   }
 });
