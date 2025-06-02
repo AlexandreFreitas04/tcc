@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import styles from '../estilos/histPartidaStyle';
 import Texto from '../meuTexto';
 const Partidas= [
@@ -64,13 +64,13 @@ const ItemPartida = ({ data, meuTime, meuPlacar, adversario, placarAdversario, r
   return(
   <View style={styles.itemPartidaContainer}>
     <Texto style={styles.dataPartida}>{data}</Texto>
-      <View style={styles.placar}> 
+      <TouchableOpacity style={styles.placar}> 
         <Texto style={styles.time}>{meuTime}</Texto>
         <Texto style={[styles.placarNumero, estiloMeuPlacar]}>{meuPlacar} </Texto>
-        <Texto style={styles.vsTexto}>Vs</Texto>
+        <Texto style={styles.vsTexto}>X</Texto>
         <Texto style={[styles.placarNumero, estiloAdvPlacar]}>{placarAdversario} </Texto>
         <Texto style={styles.time}>{adversario}</Texto>   
-      </View>
+      </TouchableOpacity>
         <Texto style={[styles.resultadoTexto, estiloResultadoTexto]}>{resultado.toUpperCase()} </Texto>
   </View>
   );
@@ -78,10 +78,24 @@ const ItemPartida = ({ data, meuTime, meuPlacar, adversario, placarAdversario, r
 
 }
 export default function HistPartida () {
+const renderItem = ({ item }) => (
+    <ItemPartida
+      data={item.data}
+      meuTime={item.meuTime}
+      meuPlacar={item.meuPlacar}
+      adversario={item.adversario}
+      placarAdversario={item.advPlacar}
+      resultado={item.resultado}
+    />
+  );
   return (
-    <View style={styles.container}>
-      <Texto>Suas ultimas partidas</Texto>
-      
+   <View style={styles.container}>
+      <Texto style={styles.tituloPagina}>Suas últimas partidas</Texto> 
+      <FlatList
+        data={Partidas}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   )
 }
