@@ -10,10 +10,10 @@ const Partidas= [
     adversario: 'Time B',
     meuPlacar: '9',
     advPlacar: '5',
-    resultado: 'Vitória'
+    resultado: 'Vitoria'
   },
   {
-    id: '1',
+    id: '2',
     data: '01/06/2025',
     meuTime: 'Time A',
     adversario: 'Time B',
@@ -28,7 +28,7 @@ const Partidas= [
     adversario: 'Time B',
     meuPlacar: '15',
     advPlacar: '9',
-    resultado: 'Vitória'
+    resultado: 'Vitoria'
   },
   {
     id: '4',
@@ -39,12 +39,49 @@ const Partidas= [
     advPlacar: '12',
     resultado: 'Derrota'
   },
-  
 ]
+
+const ItemPartida = ({ data, meuTime, meuPlacar, adversario, placarAdversario, resultado }) => {
+
+  let estiloMeuPlacar;
+  let estiloAdvPlacar;
+  let estiloResultadoTexto;
+  
+  if (resultado === 'Vitoria') {
+    estiloMeuPlacar = styles.textoVitoria; 
+    estiloAdvPlacar = styles.textoDerrota;
+    estiloResultadoTexto = styles.textoVitoria;
+  } else if (resultado === 'Derrota') {
+    estiloMeuPlacar = styles.textoDerrota;
+    estiloAdvPlacar = styles.textoVitoria;
+    estiloResultadoTexto = styles.textoDerrota;
+  } else { 
+    estiloMeuPlacar = styles.textoEmpate;
+    estiloAdvPlacar = styles.textoEmpate;
+    estiloResultadoTexto = styles.textoEmpate;
+  }
+
+  return(
+  <View style={styles.itemPartidaContainer}>
+    <Texto style={styles.dataPartida}>{data}</Texto>
+      <View style={styles.placar}> 
+        <Texto style={styles.time}>{meuTime}</Texto>
+        <Texto style={[styles.placarNumero, estiloMeuPlacar]}>{meuPlacar} </Texto>
+        <Texto style={styles.vsTexto}>Vs</Texto>
+        <Texto style={[styles.placarNumero, estiloAdvPlacar]}>{placarAdversario} </Texto>
+        <Texto style={styles.time}>{adversario}</Texto>   
+      </View>
+        <Texto style={[styles.resultadoTexto, estiloResultadoTexto]}>{resultado.toUpperCase()} </Texto>
+  </View>
+  );
+
+
+}
 export default function HistPartida () {
   return (
     <View style={styles.container}>
       <Texto>Suas ultimas partidas</Texto>
+      
     </View>
   )
 }
