@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-// 1. A importação mudou para 'expo-status-bar'
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import styles from '../estilos/homeStyle';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,8 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function Home() {
   return (
     <View style={styles.container}>
-
-      <StatusBar style="light"/>
+      <StatusBar style="light" />
 
       <View style={styles.cabecalho}>
         <Text style={styles.titulo}>Deu Jogo!</Text>
@@ -17,8 +15,17 @@ export default function Home() {
           <Icon name="bell-outline" size={28} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
-      <View>
-      </View>
+
+      <ScrollView>
+        <View style={styles.menuContainer}>
+
+          <TouchableOpacity style={styles.menuBotao}>
+            <Icon name="plus-circle-outline" size={40} color="#2563EB" />
+            <Text style={styles.menuTitulo}>Criar Partida</Text>
+            <Text style={styles.menuSubtitulo}>Organize um novo jogo e chame a galera</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

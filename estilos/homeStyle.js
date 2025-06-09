@@ -15,14 +15,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   titulo: {
-    fontFamily: 'sans-serif-condensed', 
-    fontWeight: 'bold', 
+    fontFamily: 'sans-serif-condensed',
+    fontWeight: 'bold',
     fontSize: 36,
     color: '#FFFFFF',
   },
-  sino:{
-    justifyContent: 'flex-end'
-  }
+  menuContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  menuBotao: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 30,
+    paddingHorizontal: 20, 
+    borderRadius: 15,
+    alignItems: 'center',
+    marginBottom: 20,
+    elevation: 5,
+
+  },
+  menuTitulo: {
+    fontFamily: 'sans-serif-condensed',
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: '#1f2937',
+    marginTop: 10,
+  },
+  menuSubtitulo: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginTop: 5,
+    textAlign: 'center',
+  },
 });
 
 export default styles;
