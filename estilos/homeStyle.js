@@ -5,17 +5,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FAF9F6',
   },
-  conteudo: {
-    flex: 1,
-    justifyContent: 'center',
+  cabecalho: {
+    backgroundColor: '#2563EB',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    height: 100,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    flexDirection: 'row'
   },
   titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    fontFamily: 'sans-serif-condensed', 
+    fontWeight: 'bold', 
+    fontSize: 36,
+    color: '#FFFFFF',
   },
+  sino:{
+    justifyContent: 'flex-end'
+  }
 });
 
 export default styles;
