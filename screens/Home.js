@@ -40,6 +40,13 @@ export default function Home() {
             <Text style={styles.menuSubtitulo}>Acompanhe seu desempenho e histórico</Text>
           </TouchableOpacity>
 
+          {/* Histórico de Partida */}   
+          <TouchableOpacity style={styles.menuBotao}>
+            <Icon name="history" size={40} color="#2563EB" />
+            <Text style={styles.menuTitulo}>Histórico de Partida</Text>
+            <Text style={styles.menuSubtitulo}>Reveja os resultados dos seus jogos passados</Text>
+          </TouchableOpacity>
+
         </View>
       </ScrollView>
     </View>
