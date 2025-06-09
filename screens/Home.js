@@ -19,17 +19,27 @@ export default function Home() {
       <ScrollView>
         <View style={styles.menuContainer}>
 
+          {/* Criar Partida */}
           <TouchableOpacity style={styles.menuBotao}>
             <Icon name="plus-circle-outline" size={40} color="#2563EB" />
             <Text style={styles.menuTitulo}>Criar Partida</Text>
             <Text style={styles.menuSubtitulo}>Organize um novo jogo e chame a galera</Text>
           </TouchableOpacity>
 
+          {/* Minhas Partidas */}
           <TouchableOpacity style={styles.menuBotao}>
             <Icon name="calendar-check-outline" size={40} color="#2563EB" />
             <Text style={styles.menuTitulo}>Minhas Partidas</Text>
             <Text style={styles.menuSubtitulo}>Veja os jogos que você já confirmou</Text>
           </TouchableOpacity>
+
+          {/* Estatisticas */}
+          <TouchableOpacity style={styles.menuBotao}>
+            <Icon name="poll" size={40} color="#2563EB" />
+            <Text style={styles.menuTitulo}>Minhas Estatísticas</Text>
+            <Text style={styles.menuSubtitulo}>Acompanhe seu desempenho e histórico</Text>
+          </TouchableOpacity>
+
         </View>
       </ScrollView>
     </View>
