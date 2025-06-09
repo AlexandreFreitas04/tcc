@@ -24,6 +24,12 @@ export default function Home() {
             <Text style={styles.menuTitulo}>Criar Partida</Text>
             <Text style={styles.menuSubtitulo}>Organize um novo jogo e chame a galera</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuBotao}>
+            <Icon name="calendar-check-outline" size={40} color="#2563EB" />
+            <Text style={styles.menuTitulo}>Minhas Partidas</Text>
+            <Text style={styles.menuSubtitulo}>Veja os jogos que você já confirmou</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
