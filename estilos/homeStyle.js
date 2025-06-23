@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 40
   },
   menuBotao: {
     backgroundColor: '#FFFFFF',
