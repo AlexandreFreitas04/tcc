@@ -2,6 +2,7 @@
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import {auth} from '../config/firebase'
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,15 @@ export default function Login() {
 
   const navigation = useNavigation()
 
+  const logar = () => {
+    auth
+    .signInWithEmailAndPassword(email, senha)
+    .then (userCredentials =>{
+      console.log ("Logado como: " + userCredentials.user?.email)
+      navigation.replace('Home')
+    })
+    .catch(erro=>alert(erro.message))
+  }
 
   return (
     <View style={styles.container}>
@@ -25,7 +35,7 @@ export default function Login() {
        />
 
        <TouchableOpacity> 
-        <Text> Entrar </Text>
+        <Text onPress={logar}> Entrar </Text>
        </TouchableOpacity>
     </View>
   );
