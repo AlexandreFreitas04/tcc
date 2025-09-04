@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,11 +21,11 @@ export default function Login() {
 
        <TextInput 
        placeholder = 'Senha'
-       onChangeText = {texto => setEmail (texto)}
+       onChangeText = {texto => setSenha (texto)}
        />
 
        <TouchableOpacity> 
-        <text>Entrar</text>
+        <Text> Entrar </Text>
        </TouchableOpacity>
     </View>
   );
