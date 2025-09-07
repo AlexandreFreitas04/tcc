@@ -48,7 +48,8 @@ export default function Login() {
         </TouchableOpacity>
         <Text style={styles.preTextCadastrar}>Não tem uma conta?</Text>
         <TouchableOpacity>
-          <Text style={styles.textCadastrar}>Cadastre-se</Text>
+          <Text style={styles.textCadastrar}
+          onPress={() => navigation.replace('Register')}>Cadastre-se</Text>
         </TouchableOpacity>
        </View>
     </View>
