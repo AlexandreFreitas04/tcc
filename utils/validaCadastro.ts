@@ -19,19 +19,9 @@ export function validarCadastro(dados: UsuarioCadastro) {
     return { sucesso: false, mensagem: 'Digite um e-mail válido.' };
   }
 
-  const regexCPF = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
-  if (!regexCPF.test(cpf)) {
-    return { sucesso: false, mensagem: 'CPF inválido. Use o formato 000.000.000-00.' };
-  }
-
   const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
   if (!regexData.test(dataNascimento)) {
     return { sucesso: false, mensagem: 'Data de nascimento inválida. Use o formato DD/MM/AAAA.' };
-  }
-
-  const regexTelefone = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
-  if (!regexTelefone.test(telefone)) {
-    return { sucesso: false, mensagem: 'Telefone inválido. Use o formato (00) 00000-0000.' };
   }
 
   if (senha.length < 6) {

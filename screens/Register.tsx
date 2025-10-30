@@ -1,12 +1,10 @@
-// Register.tsx
-// Tela de cadastro completa, impedindo qualquer caractere não numérico nos campos CPF e telefone.
-
 import { Text, TouchableOpacity, View, TextInput, Alert, Platform } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from '../estilo';
 import { handleRegister } from '../controllers/registerController';
+import { maskCPF, maskTelefone } from   '../utils/masks'; 
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -19,13 +17,11 @@ export default function Register() {
 
   const navigation = useNavigation();
 
-  // 📅 Data de nascimento
   const onChangeDate = (event: any, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) setDataNascimento(selectedDate);
   };
 
-  // 🔐 Envio dos dados
   const registrar = async () => {
     const dataFormatada = dataNascimento
       ? dataNascimento.toLocaleDateString('pt-BR')
@@ -48,15 +44,11 @@ export default function Register() {
     }
   };
 
-  // 🧮 Função utilitária — verifica se todos os caracteres são numéricos
-  const ehNumeroValido = (texto: string) => /^[0-9]*$/.test(texto);
-
   return (
     <View style={styles.fundoLogin}>
       <View style={styles.cardLogin}>
         <Text style={styles.textLogin}>Crie sua conta</Text>
 
-        {/* E-mail */}
         <TextInput
           placeholder='E-mail'
           value={email}
@@ -66,16 +58,15 @@ export default function Register() {
           autoCapitalize='none'
         />
 
-        {/* CPF — bloqueia qualquer caractere que não seja número */}
         <TextInput
-          placeholder='CPF (somente números)'
+          placeholder='CPF (000.000.000-00)'
           value={cpf}
           onChangeText={(texto) => {
-            if (ehNumeroValido(texto)) setCpf(texto); // ✅ só atualiza se for número
+            setCpf(maskCPF(texto)); 
           }}
           style={styles.inputTextLogin}
           keyboardType='numeric'
-          maxLength={11}
+          maxLength={14} 
         />
 
         <TouchableOpacity
@@ -100,14 +91,14 @@ export default function Register() {
         )}
 
         <TextInput
-          placeholder='Telefone (somente números)'
+          placeholder='Telefone ((00) 00000-0000)'
           value={telefone}
           onChangeText={(texto) => {
-            if (ehNumeroValido(texto)) setTelefone(texto);
+            setTelefone(maskTelefone(texto));
           }}
           style={styles.inputTextLogin}
           keyboardType='phone-pad'
-          maxLength={11}
+          maxLength={15} 
         />
 
         <TextInput
@@ -117,7 +108,6 @@ export default function Register() {
           style={styles.inputTextLogin}
           secureTextEntry
         />
-
         <TextInput
           placeholder='Confirmar senha'
           value={confirmarSenha}
