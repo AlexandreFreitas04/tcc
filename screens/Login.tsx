@@ -41,6 +41,7 @@ export default function Login() {
         placeholder = 'Senha'
         onChangeText = {texto => setSenha (texto)}
         style={styles.inputTextLogin}
+        secureTextEntry
         />
 
         <TouchableOpacity style={styles.botaoLogin} onPress={logar}> 
