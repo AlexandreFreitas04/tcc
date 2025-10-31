@@ -1,5 +1,16 @@
 import { auth, firestore } from '../config/firebase';
-import { collection, addDoc, Timestamp, query, where, getDocs } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  Timestamp, 
+  query, 
+  where, 
+  getDocs, 
+  doc, 
+  deleteDoc,
+  getDoc,       // Adicionado
+  updateDoc     // Adicionado
+} from 'firebase/firestore';
 
 interface Partida {
   nome: string;
@@ -72,5 +83,69 @@ export async function listarMinhasPartidas() {
   } catch (erro: any) {
     console.error('❌ Erro ao listar partidas:', erro);
     return { sucesso: false, partidas: [], mensagem: erro.message || 'Erro ao buscar partidas.' };
+  }
+}
+
+export async function excluirPartida(id: string) {
+  try {
+    const usuario = auth.currentUser;
+    if (!usuario) {
+      return { sucesso: false, mensagem: 'Usuário não autenticado.' };
+    }
+
+    const partidaDocRef = doc(firestore, 'partidas', id);
+    await deleteDoc(partidaDocRef);
+
+    return { sucesso: true, mensagem: 'Partida excluída com sucesso!' };
+  } catch (erro: any) {
+    console.error('❌ Erro ao excluir partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao excluir partida.' };
+  }
+}
+
+export async function buscarPartidaPorId(id: string) {
+  try {
+    const usuario = auth.currentUser;
+    if (!usuario) {
+      return { sucesso: false, mensagem: 'Usuário não autenticado.' };
+    }
+    
+    const partidaDocRef = doc(firestore, 'partidas', id);
+    const docSnap = await getDoc(partidaDocRef);
+
+    if (docSnap.exists()) {
+      // Opcional: Verificar se o usuário é o dono
+      if (docSnap.data().uidCriador !== usuario.uid) {
+         return { sucesso: false, mensagem: 'Você não tem permissão para editar esta partida.' };
+      }
+      return { sucesso: true, partida: docSnap.data() };
+    } else {
+      return { sucesso: false, mensagem: 'Partida não encontrada.' };
+    }
+  } catch (erro: any) {
+    console.error('❌ Erro ao buscar partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao buscar dados da partida.' };
+  }
+}
+
+export async function atualizarPartida(id: string, dados: any) {
+  try {
+    const usuario = auth.currentUser;
+    if (!usuario) {
+      return { sucesso: false, mensagem: 'Usuário não autenticado.' };
+    }
+    
+    const partidaDocRef = doc(firestore, 'partidas', id);
+
+    // O 'dados' vem da tela, não incluímos 'criadoEm' ou 'uidCriador'
+    // para não sobrescrever os dados originais.
+    await updateDoc(partidaDocRef, {
+      ...dados
+    });
+
+    return { sucesso: true, mensagem: 'Partida atualizada com sucesso!' };
+  } catch (erro: any) {
+    console.error('❌ Erro ao atualizar partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao salvar alterações.' };
   }
 }

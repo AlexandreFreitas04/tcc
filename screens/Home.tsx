@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from '../estilo'; 
 import CriarPartidaModal from './modalCadastroPartida'; 
 
-export default function Home() {
+export default function Home({ navigation }) {
   
   const [modalVisivel, setModalVisivel] = useState(false);
 

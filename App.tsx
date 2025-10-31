@@ -6,6 +6,7 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import MinhasPartidas from './screens/MinhasPartidas';
+import EditarPartida from './screens/EditarPartida';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="MinhasPartidas" component={MinhasPartidas} />
+        <Stack.Screen name="EditarPartida" component={EditarPartida} />
       </Stack.Navigator>
     </NavigationContainer>
   );
