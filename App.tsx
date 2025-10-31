@@ -1,33 +1,22 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useFonts } from 'expo-font';
-import { Home, Login, Register } from './screens';
-import { View, ActivityIndicator } from 'react-native'; 
+
+import Home from './screens/Home';
+import Login from './screens/Login';
+import Register from './screens/Register';
+import MinhasPartidas from './screens/MinhasPartidas';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  
-  const [fontsLoaded] = useFonts({
-    'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.ttf'),
-    'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#7bacec" />
-      </View>
-    );
-  }
-
-
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name='Register' component={Register} options={{ headerShown: false }}/>
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }}/>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="MinhasPartidas" component={MinhasPartidas} />
       </Stack.Navigator>
     </NavigationContainer>
   );
