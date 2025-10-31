@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Platform, 
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -34,18 +35,17 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const onChangeDate = (_: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
+    setShowDatePicker(Platform.OS === 'ios'); // Ajuste para iOS
     if (selectedDate) setData(selectedDate);
   };
 
   const onChangeTime = (_: any, selectedTime?: Date) => {
-    setShowTimePicker(false);
+    setShowTimePicker(Platform.OS === 'ios'); // Ajuste para iOS
     if (selectedTime) setHora(selectedTime);
   };
 
   const apenasNumeros = (texto: string) => /^[0-9]*$/.test(texto);
 
-  // ✅ Agora a função cria no Firestore de verdade
   const handleCriarPartida = async () => {
     const dadosPartida = {
       nome,
@@ -85,18 +85,28 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
     setHora(new Date());
   };
 
+  const fecharPickersIOS = () => {
+    if (Platform.OS === 'ios') {
+      setShowDatePicker(false);
+      setShowTimePicker(false);
+    }
+  }
+
   return (
     <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: 'center',
             alignItems: 'center',
+            paddingVertical: 40 
           }}
         >
-          <View style={styles.modalContainer}>
+          <TouchableOpacity 
+            activeOpacity={1} 
+            onPress={fecharPickersIOS} 
+            style={styles.modalContainer}
+          >
             <Text style={styles.modalTitle}>Criar Nova Partida</Text>
 
             <TextInput
@@ -135,7 +145,7 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
               <DateTimePicker
                 value={data}
                 mode="date"
-                display="default"
+                display="spinner" 
                 onChange={onChangeDate}
               />
             )}
@@ -143,7 +153,7 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
               <DateTimePicker
                 value={hora}
                 mode="time"
-                display="default"
+                display="spinner"
                 onChange={onChangeTime}
               />
             )}
@@ -225,7 +235,7 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
                 <Text style={styles.modalButtonText}>Criar</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </Modal>

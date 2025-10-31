@@ -38,7 +38,10 @@ export default function Home({ navigation }) {
           <Text style={styles.homeButtonText}>Minhas Partidas</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.homeButton}>
+        <TouchableOpacity 
+          style={styles.homeButton}
+          onPress={() => navigation.navigate('BuscarPartidas')}
+        >
           <Text style={styles.homeButtonText}>Buscar Partidas</Text>
         </TouchableOpacity>
       </View>

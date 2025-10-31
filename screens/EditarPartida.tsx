@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
+  Platform
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -44,33 +45,50 @@ export default function EditarPartida({ route, navigation }) {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   useEffect(() => {
-    async function carregar() {
+    async function carregarDadosPartida() {
       const resultado = await buscarPartidaPorId(partidaId);
       if (resultado.sucesso) {
-        const p = resultado.partida;
-        setNome(p.nome);
-        setLocal(p.local);
-        setPiso(p.piso);
-        setVagasJogadores(String(p.vagasJogadores));
-        setVagasGoleiros(String(p.vagasGoleiros));
-        setNivel(p.nivel);
-        setValor(p.valor);
-        setObservacoes(p.observacoes);
-        setData(parseData(p.data));
-        setHora(parseHora(p.hora));
+        const partida = resultado.partida;
+        setNome(partida.nome);
+        setLocal(partida.local);
+        setPiso(partida.piso);
+        setVagasJogadores(String(partida.vagasJogadores));
+        setVagasGoleiros(String(partida.vagasGoleiros));
+        setNivel(partida.nivel);
+        setValor(partida.valor);
+        setObservacoes(partida.observacoes);
+        setData(parseData(partida.data));
+        setHora(parseHora(partida.hora));
       } else {
-        Alert.alert('Erro', 'Não foi possível carregar a partida.');
+        Alert.alert('Erro', 'Não foi possível carregar os dados da partida.');
         navigation.goBack();
       }
       setLoading(false);
     }
-    carregar();
+    carregarDadosPartida();
   }, [partidaId]);
+
+  const onChangeDate = (_: any, selectedDate?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) setData(selectedDate);
+  };
+
+  const onChangeTime = (_: any, selectedTime?: Date) => {
+    setShowTimePicker(Platform.OS === 'ios');
+    if (selectedTime) setHora(selectedTime);
+  };
+
+  const fecharPickersIOS = () => {
+    if (Platform.OS === 'ios') {
+      setShowDatePicker(false);
+      setShowTimePicker(false);
+    }
+  }
 
   const apenasNumeros = (texto: string) => /^[0-9]*$/.test(texto);
 
   const handleSalvar = async () => {
-    const partidaAtualizada = {
+    const dadosPartida = {
       nome,
       local,
       data: data.toLocaleDateString('pt-BR'),
@@ -82,7 +100,9 @@ export default function EditarPartida({ route, navigation }) {
       valor,
       observacoes,
     };
-    const resultado = await atualizarPartida(partidaId, partidaAtualizada);
+
+    const resultado = await atualizarPartida(partidaId, dadosPartida);
+
     if (resultado.sucesso) {
       Alert.alert('Sucesso', resultado.mensagem);
       navigation.goBack();
@@ -93,149 +113,152 @@ export default function EditarPartida({ route, navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.fundoApp}>
+      <View style={[styles.modalOverlay, { justifyContent: 'center', alignItems: 'center' }]}>
         <ActivityIndicator size="large" color="#FFF9F0" />
       </View>
     );
   }
 
   return (
-    <View style={styles.fundoApp}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={styles.telaFormularioScroll}
+    <ScrollView
+      style={styles.modalOverlay}
+      contentContainerStyle={styles.modalScrollContainer}
+      keyboardShouldPersistTaps="handled"
+    >
+      <TouchableOpacity 
+        activeOpacity={1} 
+        onPress={fecharPickersIOS} 
+        style={styles.modalContainer}
       >
-        <View style={styles.telaFormularioContainer}>
-          <Text style={styles.tituloFormulario}>Editar Partida</Text>
+        <Text style={styles.modalTitle}>Editar Partida</Text>
 
-          <TextInput
-            style={styles.inputFormulario}
-            placeholder="Nome da Partida"
-            value={nome}
-            onChangeText={setNome}
-            placeholderTextColor="#666"
-          />
-          <TextInput
-            style={styles.inputFormulario}
-            placeholder="Local"
-            value={local}
-            onChangeText={setLocal}
-            placeholderTextColor="#666"
-          />
+        <TextInput
+          placeholder="Nome da Partida"
+          value={nome}
+          onChangeText={setNome}
+          style={styles.modalInput}
+          placeholderTextColor="#666"
+        />
 
-          <TouchableOpacity
-            style={styles.inputFormulario}
-            onPress={() => setShowDatePicker(true)}
+        <TextInput
+          placeholder="Local"
+          value={local}
+          onChangeText={setLocal}
+          style={styles.modalInput}
+          placeholderTextColor="#666"
+        />
+
+        <TouchableOpacity
+          style={styles.modalDateTimePicker}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={styles.modalPickerText}>{data.toLocaleDateString('pt-BR')}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.modalDateTimePicker}
+          onPress={() => setShowTimePicker(true)}
+        >
+          <Text style={styles.modalPickerText}>
+            {hora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+          </Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={data}
+            mode="date"
+            display="spinner"
+            onChange={onChangeDate}
+          />
+        )}
+        {showTimePicker && (
+          <DateTimePicker
+            value={hora}
+            mode="time"
+            display="spinner"
+            onChange={onChangeTime}
+          />
+        )}
+
+        <TextInput
+          placeholder="Vagas Jogadores (4-22)"
+          value={vagasJogadores}
+          onChangeText={(t) => apenasNumeros(t) && setVagasJogadores(t)}
+          style={styles.modalInput}
+          keyboardType="number-pad"
+          maxLength={2}
+          placeholderTextColor="#666"
+        />
+
+        <TextInput
+          placeholder="Vagas Goleiros (0-4)"
+          value={vagasGoleiros}
+          onChangeText={(t) => apenasNumeros(t) && setVagasGoleiros(t)}
+          style={styles.modalInput}
+          keyboardType="number-pad"
+          maxLength={1}
+          placeholderTextColor="#666"
+        />
+
+        <View style={styles.modalPickerContainer}>
+          <Picker
+            selectedValue={piso}
+            onValueChange={(v) => setPiso(v)}
+            style={styles.modalPicker}
           >
-            <Text>{data.toLocaleDateString('pt-BR')}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.inputFormulario}
-            onPress={() => setShowTimePicker(true)}
-          >
-            <Text>{hora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</Text>
-          </TouchableOpacity>
-
-          {showDatePicker && (
-            <DateTimePicker
-              value={data}
-              mode="date"
-              display="default"
-              onChange={(_, d) => {
-                setShowDatePicker(false);
-                if (d) setData(d);
-              }}
-            />
-          )}
-          {showTimePicker && (
-            <DateTimePicker
-              value={hora}
-              mode="time"
-              display="default"
-              onChange={(_, h) => {
-                setShowTimePicker(false);
-                if (h) setHora(h);
-              }}
-            />
-          )}
-
-          <TextInput
-            style={styles.inputFormulario}
-            placeholder="Vagas Jogadores (4-22)"
-            value={vagasJogadores}
-            onChangeText={(t) => apenasNumeros(t) && setVagasJogadores(t)}
-            keyboardType="number-pad"
-            placeholderTextColor="#666"
-          />
-          <TextInput
-            style={styles.inputFormulario}
-            placeholder="Vagas Goleiros (0-4)"
-            value={vagasGoleiros}
-            onChangeText={(t) => apenasNumeros(t) && setVagasGoleiros(t)}
-            keyboardType="number-pad"
-            placeholderTextColor="#666"
-          />
-
-          <View style={styles.pickerFormularioContainer}>
-            <Picker
-              selectedValue={piso}
-              onValueChange={(v) => setPiso(v)}
-              style={styles.pickerFormulario}
-            >
-              <Picker.Item label="Piso: Sintético" value="sintetico" />
-              <Picker.Item label="Piso: Quadra (Salão)" value="quadra" />
-              <Picker.Item label="Piso: Grama (Campo)" value="grama" />
-            </Picker>
-          </View>
-
-          <View style={styles.pickerFormularioContainer}>
-            <Picker
-              selectedValue={nivel}
-              onValueChange={(v) => setNivel(v)}
-              style={styles.pickerFormulario}
-            >
-              <Picker.Item label="Nível: Amador" value="amador" />
-              <Picker.Item label="Nível: Intermediário" value="intermediario" />
-              <Picker.Item label="Nível: Avançado" value="avancado" />
-            </Picker>
-          </View>
-
-          <TextInput
-            style={styles.inputFormulario}
-            placeholder="Valor por pessoa (ex: 20,00)"
-            value={valor}
-            onChangeText={setValor}
-            keyboardType="numeric"
-            placeholderTextColor="#666"
-          />
-
-          <TextInput
-            style={[styles.inputFormulario, { height: 80, paddingTop: 10 }]}
-            placeholder="Observações (opcional)"
-            value={observacoes}
-            onChangeText={setObservacoes}
-            multiline
-            placeholderTextColor="#666"
-          />
-
-          <View style={styles.botoesFormulario}>
-            <TouchableOpacity
-              style={styles.botaoCancelar}
-              onPress={() => navigation.goBack()}
-            >
-              <Text style={styles.textoBotaoFormulario}>Cancelar</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.botaoSalvar}
-              onPress={handleSalvar}
-            >
-              <Text style={styles.textoBotaoFormulario}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
+            <Picker.Item label="Piso: Sintético" value="sintetico" />
+            <Picker.Item label="Piso: Quadra (Salão)" value="quadra" />
+            <Picker.Item label="Piso: Grama (Campo)" value="grama" />
+          </Picker>
         </View>
-      </ScrollView>
-    </View>
+
+        <View style={styles.modalPickerContainer}>
+          <Picker
+            selectedValue={nivel}
+            onValueChange={(v) => setNivel(v)}
+            style={styles.modalPicker}
+          >
+            <Picker.Item label="Nível: Amador" value="amador" />
+            <Picker.Item label="Nível: Intermediário" value="intermediario" />
+            <Picker.Item label="Nível: Avançado" value="avancado" />
+          </Picker>
+        </View>
+
+        <TextInput
+          placeholder="Valor por pessoa (ex: 20,00)"
+          value={valor}
+          onChangeText={setValor}
+          style={styles.modalInput}
+          keyboardType="numeric"
+          placeholderTextColor="#666"
+        />
+
+        <TextInput
+          placeholder="Observações (opcional)"
+          value={observacoes}
+          onChangeText={setObservacoes}
+          style={[styles.modalInput, { height: 80, paddingTop: 10 }]}
+          multiline
+          placeholderTextColor="#666"
+        />
+
+        <View style={styles.modalButtonRow}>
+          <TouchableOpacity
+            style={[styles.modalButton, styles.modalButtonClose]}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.modalButtonText}>Cancelar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.modalButton, styles.modalButtonCreate]}
+            onPress={handleSalvar}
+          >
+            <Text style={styles.modalButtonText}>Salvar</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
