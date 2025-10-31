@@ -4,13 +4,13 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAT3fgycxbNuTrVeRrkVozinXhCggLebGc",
-  authDomain: "deujogo-a49d5.firebaseapp.com",
-  projectId: "deujogo-a49d5",
-  storageBucket: "deujogo-a49d5.firebasestorage.app",
-  messagingSenderId: "634084992196",
-  appId: "1:634084992196:web:234c0ea2b3b8c211261591",
-  measurementId: "G-N53MV6D2EH"
+  apiKey: "AIzaSyAngHgvWF0eK4ZQp-GEzpr7gR5bcRj8Apw",
+  authDomain: "tcca-8e180.firebaseapp.com",
+  projectId: "tcca-8e180",
+  storageBucket: "tcca-8e180.firebasestorage.app",
+  messagingSenderId: "1030125489113",
+  appId: "1:1030125489113:web:c02c06e8e4a07b03f9a7c8",
+  measurementId: "G-0TK9DESM0R"
 };
   
   
