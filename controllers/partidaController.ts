@@ -43,6 +43,50 @@ export async function criarPartida(dadosForm: any, usuarioLogado: { uid: string;
   }
 }
 
+export async function entrarNaPartida (partidaId: string, usuario: {uid: string, nome: string}) {
+  try {
+      const partidaRef = doc(firestore, 'partidas', partidaId);
+      
+      await updateDoc(partidaRef, {
+        jogadoresConfirmados: arrayUnion({
+          uid: usuario.uid, 
+          nome:usuario.nome,
+          confirmadoEm: Timestamp.now()
+        }),
+        vagasOcupadas: increment(1)
+      });
+      return {sucesso: true, mensagem: 'Presença confirmada com sucesso!'}
+  } catch (erro: any){
+    console.error('Erro ao entrar na partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao entrar na partida.' };
+  }
+}
+
+export async function sairDaPartida (partidaId: string, usuarioId: string){
+  try {
+    const partidaRef = doc(firestore, 'partidas', partidaId);
+    const partidaSnap = await getDoc(partidaRef);
+
+    if(!partidaSnap.exists()) {
+      return { sucesso: false, mensagem: 'Partida não encontrada.'};
+    }
+
+    const dados = partidaSnap.data();
+    const jogadoresAtuais = dados.jogadoresConfirmados || [];
+    const listaAtualizada = jogadoresAtuais.filter((j:any) => j.uid !== usuarioId);
+
+    await updateDoc(partidaRef, {
+      jogadoresConfirmados: listaAtualizada,
+      vagasOcupadas: increment(-1)
+    });
+
+    return { sucesso: true, mensagem: 'Presença cancelada com sucesso!'}
+  } catch(erro:any){
+    console.error('Erro ao cancelar presença na partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao cancelar presença na partida.' };
+  }
+}
+
 export async function listarMinhasPartidas() {
   try {
     const usuario = auth.currentUser;
@@ -120,8 +164,6 @@ export async function atualizarPartida(id: string, dados: any) {
     
     const partidaDocRef = doc(firestore, 'partidas', id);
 
-    // O 'dados' vem da tela, não incluímos 'criadoEm' ou 'uidCriador'
-    // para não sobrescrever os dados originais.
     await updateDoc(partidaDocRef, {
       ...dados
     });
