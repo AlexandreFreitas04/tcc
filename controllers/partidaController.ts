@@ -1,62 +1,45 @@
 import { auth, firestore } from '../config/firebase';
-import { 
-  collection, 
-  addDoc, 
-  Timestamp, 
-  query, 
-  where, 
-  getDocs, 
-  doc, 
-  deleteDoc,
-  getDoc,       // Adicionado
-  updateDoc     // Adicionado
+import { collection, addDoc, Timestamp, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, arrayUnion,
+  arrayRemove, increment
 } from 'firebase/firestore';
 
-interface Partida {
-  nome: string;
-  local: string;
-  data: string;
-  hora: string;
-  piso: string;
-  vagasJogadores: number;
-  vagasGoleiros: number;
-  nivel: string;
-  valor: string;
-  observacoes: string;
-  criadoEm: Date;
-}
+export async function criarPartida(dadosForm: any, usuarioLogado: { uid: string; nome: string }) {
+  
+  try{
+    const [dia, mes, ano] = dadosForm.data.split('/').map(Number);
+    const [hora, minuto] = dadosForm.hora.split(':').map(Number);
+    const dataHoraObjeto = new Date(ano, mes - 1, dia, hora, minuto);
 
-export async function criarPartida(partida: Partida) {
-  try {
-    const usuario = auth.currentUser;
-    if (!usuario) {
-      return { sucesso: false, mensagem: 'Usuário não autenticado.' };
+    const novaPartida = {
+      criadorId: usuarioLogado.uid,
+      nomeCriador: usuarioLogado.nome,
+      nome: dadosForm.nome,
+      modalidade: dadosForm.modalidade,
+      dataHora: Timestamp.fromDate(dataHoraObjeto),
+      local: dadosForm.local,
+      piso: dadosForm.piso,
+      nivel: dadosForm.nivel,
+      valor: Number(String(dadosForm.valor).replace(',', '.')) || 0,
+      vagasJogadores: Number(dadosForm.vagasJogadores) || 0,
+      vagasGoleiros: Number(dadosForm.vagasGoleiros) || 0,
+      vagasOcupadas: 1,
+      observacoes: dadosForm.observacoes || '',
+      status: 'aberta',
+      jogadoresConfirmados: [
+        {
+          uid: usuarioLogado.uid,
+          nome: usuarioLogado.nome,
+          confirmadoEm: Timestamp.now()
+        }
+      ],
+      criadoEm: Timestamp.now()
     }
+      const docRef = await addDoc(collection(firestore, 'partidas'), novaPartida);
 
-    if (!partida.nome || !partida.local || !partida.data || !partida.hora) {
-      return { sucesso: false, mensagem: 'Preencha todos os campos obrigatórios.' };
-    }
-
-    const dadosPartida = {
-      ...partida,
-      uidCriador: usuario.uid,
-      criadoEm: Timestamp.fromDate(partida.criadoEm),
-    };
-
-    const docRef = await addDoc(collection(firestore, 'partidas'), dadosPartida);
-    console.log('✅ Partida criada com ID:', docRef.id);
-    return { sucesso: true, mensagem: 'Partida criada com sucesso!' };
+      return { sucesso: true, id: docRef.id, mensagem: 'Partida criada com sucesso!' };
   } catch (erro: any) {
-    console.error('❌ Erro ao salvar partida:', erro);
-    let mensagemErro = 'Erro ao salvar a partida.';
-    if (erro.code === 'permission-denied') {
-      mensagemErro = 'Sem permissão para gravar no Firestore. Verifique as regras do banco.';
-    } else if (erro.code === 'unavailable') {
-      mensagemErro = 'Servidor indisponível. Tente novamente.';
-    } else if (erro.message) {
-      mensagemErro = erro.message;
-    }
-    return { sucesso: false, mensagem: mensagemErro };
+    console.error('Erro ao criar partida:', erro);
+    return { sucesso: false, mensagem: erro.message || 'Erro ao criar partida.' };
   }
 }
 
