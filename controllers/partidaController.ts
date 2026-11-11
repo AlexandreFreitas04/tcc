@@ -1,7 +1,6 @@
 import { auth, firestore } from '../config/firebase';
-import { collection, addDoc, Timestamp, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, arrayUnion,
-  arrayRemove, increment
-} from 'firebase/firestore';
+import { collection, addDoc, Timestamp, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, arrayUnion, increment} 
+from 'firebase/firestore';
 
 export async function criarPartida(dadosForm: any, usuarioLogado: { uid: string; nome: string }) {
   
@@ -121,7 +120,7 @@ export async function listarMinhasPartidas() {
       return { sucesso: false, partidas: [], mensagem: 'Usuário não autenticado.' };
     }
 
-    const q = query(collection(firestore, 'partidas'), where('uidCriador', '==', usuario.uid));
+    const q = query(collection(firestore, 'partidas'), where('criadorId', '==', usuario.uid));
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
@@ -135,7 +134,7 @@ export async function listarMinhasPartidas() {
 
     return { sucesso: true, partidas };
   } catch (erro: any) {
-    console.error('❌ Erro ao listar partidas:', erro);
+    console.error('Erro ao listar partidas:', erro);
     return { sucesso: false, partidas: [], mensagem: erro.message || 'Erro ao buscar partidas.' };
   }
 }
@@ -152,7 +151,7 @@ export async function excluirPartida(id: string) {
 
     return { sucesso: true, mensagem: 'Partida excluída com sucesso!' };
   } catch (erro: any) {
-    console.error('❌ Erro ao excluir partida:', erro);
+    console.error('Erro ao excluir partida:', erro);
     return { sucesso: false, mensagem: erro.message || 'Erro ao excluir partida.' };
   }
 }
@@ -168,16 +167,15 @@ export async function buscarPartidaPorId(id: string) {
     const docSnap = await getDoc(partidaDocRef);
 
     if (docSnap.exists()) {
-      // Opcional: Verificar se o usuário é o dono
-      if (docSnap.data().uidCriador !== usuario.uid) {
+      if (docSnap.data().criadorId !== usuario.uid) {
          return { sucesso: false, mensagem: 'Você não tem permissão para editar esta partida.' };
       }
-      return { sucesso: true, partida: docSnap.data() };
+      return { sucesso: true, partida: { id: docSnap.id, ...docSnap.data() } };
     } else {
       return { sucesso: false, mensagem: 'Partida não encontrada.' };
     }
   } catch (erro: any) {
-    console.error('❌ Erro ao buscar partida:', erro);
+    console.error('Erro ao buscar partida:', erro);
     return { sucesso: false, mensagem: erro.message || 'Erro ao buscar dados da partida.' };
   }
 }
@@ -197,7 +195,7 @@ export async function atualizarPartida(id: string, dados: any) {
 
     return { sucesso: true, mensagem: 'Partida atualizada com sucesso!' };
   } catch (erro: any) {
-    console.error('❌ Erro ao atualizar partida:', erro);
+    console.error('Erro ao atualizar partida:', erro);
     return { sucesso: false, mensagem: erro.message || 'Erro ao salvar alterações.' };
   }
 }
