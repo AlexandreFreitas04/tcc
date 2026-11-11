@@ -87,6 +87,33 @@ export async function sairDaPartida (partidaId: string, usuarioId: string){
   }
 }
 
+export async function listarPartidasDisponiveis(){
+try{
+  const partidasRef = collection(firestore, 'partidas');
+  const agora = Timestamp.now();
+
+  const q = query(
+    partidasRef,
+    where('status', '==', 'aberta'),
+    where ('dataHora', '>=', agora),
+    orderBy('dataHora', 'asc')
+  )
+
+  const snapshot = await getDocs(q);
+  
+  const partidas = snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data()
+  }));
+
+  return { sucesso: true, partidas };
+} catch(erro:any){
+  console.error('Erro ao listar partidas disponíveis:', erro)
+  return { sucesso: false, partidas: [], mensagem: erro.message || 'Erro ao listar partidas disponíveis.'}
+}
+
+}
+
 export async function listarMinhasPartidas() {
   try {
     const usuario = auth.currentUser;
