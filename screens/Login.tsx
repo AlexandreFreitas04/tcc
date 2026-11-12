@@ -11,14 +11,40 @@ export default function Login() {
 
   const navigation = useNavigation()
 
-  const logar = () => {
-    auth
-    .signInWithEmailAndPassword(email, senha)
-    .then (userCredentials =>{
-      console.log ("Logado como: " + userCredentials.user?.email)
-      navigation.replace('Home')
-    })
-    .catch(erro=>alert(erro.message))
+  const logar = async () => {
+    if (!email.trim() || !senha) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
+    setCarregando(true);
+  
+    try{
+      const userCredentials = await auth.signInWithEmailAndPassword(email.trim(), senha);
+      console.log('Logado como: ', userCredentials.user.email);
+
+      navigation.replace('Home');
+    } catch (error: any) {
+      console.error('Erro ao logar:', error);
+
+      let mensagem = 'Não foi possível realizar o login. Verifique sua conexão.';
+      if (
+          erro.code === 'auth/inavalid-credential'  ||
+          erro.code === 'auth/user-not-found' ||
+          erro.code === 'auth/wrong-password'
+      ){
+        mensagem = 'E-mail ou senha incorretos.';
+      } else if (erro.code == 'auth/invalid-email') {
+        mensagem = 'Digite um endereço de email válido.';
+      } else if (erro.code == 'auth/too-many-requests') {
+        mensagem = 'Muitas tentativas de login. Tente novamente mais tarde.';
+      }
+
+      Alert.alert('Erro no Login', mensagem);
+    } finally {
+      setCarregando(false);
+    }
+    }
   }
 
   return (
