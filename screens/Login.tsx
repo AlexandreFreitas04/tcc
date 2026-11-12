@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, View, TextInput, Image, Alert, ActivyIndicator } from 'react-native';
+import {Text, TouchableOpacity, View, TextInput, Image, Alert, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilo'
@@ -21,15 +21,15 @@ export default function Login() {
   
     try{
       const userCredentials = await auth.signInWithEmailAndPassword(email.trim(), senha);
-      console.log('Logado como: ', userCredentials.user.email);
+      console.log('Logado como: ', userCredentials.user?.email);
 
       navigation.replace('Home');
-    } catch (error: any) {
-      console.error('Erro ao logar:', error);
+    } catch (erro: any) {
+      console.error('Erro ao logar:', erro);
 
       let mensagem = 'Não foi possível realizar o login. Verifique sua conexão.';
       if (
-          erro.code === 'auth/inavalid-credential'  ||
+          erro.code === 'auth/invalid-credential'  ||
           erro.code === 'auth/user-not-found' ||
           erro.code === 'auth/wrong-password'
       ){
@@ -44,6 +44,17 @@ export default function Login() {
     } finally {
       setCarregando(false);
     }
+  }
+
+  const recuperrarSenha = async () => {
+    if (!email.trim()) {
+      Alert.alert(
+        'Recuperar Senha',
+        'Digite seu email no campo de login acima para enviarmos o link de redefinição de senha.'
+      );
+      return;
+    } catch (erro: any) {
+      Alert.alert('Erro', 'Não foi possível enviar o email. Verifique se o endereço de email está correto.')
     }
   }
 
