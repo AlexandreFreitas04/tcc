@@ -1,5 +1,5 @@
-import {Text, TouchableOpacity, View, TextInput, Image } from 'react-native';
-import { useState } from 'react';
+import {Text, TouchableOpacity, View, TextInput, Image, Alert, ActivyIndicator } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilo'
 import {auth} from '../config/firebase'
@@ -7,6 +7,7 @@ import {auth} from '../config/firebase'
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [carregando, setCarregando] = useState(false); 
 
   const navigation = useNavigation()
 
