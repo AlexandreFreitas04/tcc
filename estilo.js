@@ -413,4 +413,13 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
+  botaoEsqueceuSenha: {
+    alignSelf: 'flex-end',
+    marginBottom: 15,
+    marginRight: 10,
+  },
+  textEsqueceuSenha: {
+    color: '#555',
+    fontSize: 13,
+  },
 });

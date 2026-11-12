@@ -9,7 +9,7 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [carregando, setCarregando] = useState(false); 
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
 
   const logar = async () => {
     if (!email.trim() || !senha) {
@@ -46,13 +46,20 @@ export default function Login() {
     }
   }
 
-  const recuperrarSenha = async () => {
+  const recuperarSenha = async () => {
     if (!email.trim()) {
       Alert.alert(
         'Recuperar Senha',
         'Digite seu email no campo de login acima para enviarmos o link de redefinição de senha.'
       );
       return;
+    }
+    try {
+      await auth.sendPasswordResetEmail(email.trim());
+      Alert.alert(
+        'Email enviado',
+        'Verifique sua caixa de entrada para redefinir sua senha.'
+      )
     } catch (erro: any) {
       Alert.alert('Erro', 'Não foi possível enviar o email. Verifique se o endereço de email está correto.')
     }
@@ -71,24 +78,48 @@ export default function Login() {
 
         <TextInput 
         placeholder='E-mail'
+        value={email}
         onChangeText = {texto => setEmail(texto)}
         style={styles.inputTextLogin}
+        keyboardType='email-address'
+        autoCapitalize='none'
+        autoCorrect={false}
         />
 
         <TextInput 
         placeholder = 'Senha'
+        value = {senha}
         onChangeText = {texto => setSenha (texto)}
         style={styles.inputTextLogin}
         secureTextEntry
         />
 
-        <TouchableOpacity style={styles.botaoLogin} onPress={logar}> 
-          <Text style={styles.textBotao}> Entrar </Text>
+        {/* Botão ESQUECEU A SENHA */}  
+        <TouchableOpacity
+          onPress={recuperarSenha}
+          style={styles.botaoEsqueceuSenha}
+        >
+          <Text style={styles.textEsqueceuSenha}>Esqueceu sua senha?</Text>
         </TouchableOpacity>
+
+        {/* Botão LOGIN */}    
+        <TouchableOpacity 
+          style={styles.botaoLogin} 
+          onPress={logar}
+          disabled={carregando}
+        > 
+          {carregando ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.textBotao}>Entrar</Text>
+        )}
+        </TouchableOpacity>
+
+        {/* Botão CADASTRAR*/}  
         <Text style={styles.preTextCadastrar}>Não tem uma conta?</Text>
-        <TouchableOpacity>
-          <Text style={styles.textCadastrar}
-          onPress={() => navigation.replace('Register')}>Cadastre-se</Text>
+
+        <TouchableOpacity onPress={() => navigation.replace('Register')}>
+          <Text style={styles.textCadastrar}>Cadastre-se</Text>
         </TouchableOpacity>
        </View>
     </View>
