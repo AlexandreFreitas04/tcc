@@ -463,12 +463,14 @@ export default StyleSheet.create({
     fontSize: 28,
     color: '#10B981',
     marginBottom: 5,
+    textAlign: 'center',
   },
   subtextLogin:{
     fontFamily: 'Montserrat-Regular',
     fontSize: 14,
     color: '#777',
     marginBottom: 25,
+    textAlign: 'center',
   },
   inputContainerLogin:{
     flexDirection: 'row',
@@ -493,8 +495,28 @@ export default StyleSheet.create({
   },
   rodapeCadastroContainer:{
     flexDirection: 'row',
-    marginTop: 25,
+    marginTop: 10,
     alignItems: 'center',
   },
-  
+  headerRegister: {
+    flex: 0.22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingtTop: 15,
+  },
+  logoRegister:{
+    width: 85,
+    height: 85,
+    tintColor: '#FFF9F0'
+  },
+  cardRegister:{
+    flex: 0.78,
+    backgroundColor: '#FFF9F0',
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingHorizontal: 30,
+    paddingTop: 25, 
+    elevation: 10,
+  },
+
 });
