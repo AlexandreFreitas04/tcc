@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../estilo'
 import {auth} from '../config/firebase'
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false); 
 
   const navigation = useNavigation<any>()
@@ -67,32 +69,53 @@ export default function Login() {
 
   return (
     <View style={styles.fundoLogin}>
-      <View style={styles.cardLogin}>
+      <View style={styles.headerLogin}>
         <Image 
         source={require('../assets/logo_nome.png')}
         style={styles.logoLogin}
         resizeMode="contain"/>
+      </View>
+      <View style ={styles.cardLogin}>
         <Text style={styles.subtextLogin}>Seu jogo começa aqui.</Text>
         <Text style={styles.textLogin}> Faça seu Login</Text>
+        <View style={styles.inputContainerLogin}>
+          <Ionicons name="mail-outline" size={20} color = "#10B981" style={styles.inputIconLogin}/>
+          <TextInput 
+            placeholder='E-mail'
+            placeholderTextColor="#999"
+            value={email}
+            onChangeText = {texto => setEmail(texto)}
+            style={styles.inputTextLogin}
+            keyboardType='email-address'
+            autoCapitalize='none'
+            autoCorrect={false}
+          />
+        </View>
 
+        <View style={styles.inputContainerLogin}>
+          <Ionicons 
+            name = "lock-closed-outline"
+            size={20}
+            color="#10B981"
+            style={styles.inputIconLogin}
+          />
 
-        <TextInput 
-        placeholder='E-mail'
-        value={email}
-        onChangeText = {texto => setEmail(texto)}
-        style={styles.inputTextLogin}
-        keyboardType='email-address'
-        autoCapitalize='none'
-        autoCorrect={false}
-        />
-
-        <TextInput 
-        placeholder = 'Senha'
-        value = {senha}
-        onChangeText = {texto => setSenha (texto)}
-        style={styles.inputTextLogin}
-        secureTextEntry
-        />
+          <TextInput 
+          placeholder = 'Senha'
+          placeholderTextColor="#999"
+          value = {senha}
+          onChangeText = {texto => setSenha (texto)}
+          style={styles.inputTextLogin}
+          secureTextEntry = {!mostrarSenha}
+          />
+          <TouchableOpacity onPress={()=> setMostrarSenha(!mostrarSenha)}>
+            <Ionicons
+              name={mostrarSenha ? 'eye-outline' : 'eye-off-outline'}
+              size={20}
+              color="#999"
+            />
+          </TouchableOpacity>
+        </View>
 
         {/* Botão ESQUECEU A SENHA */}  
         <TouchableOpacity
@@ -116,11 +139,13 @@ export default function Login() {
         </TouchableOpacity>
 
         {/* Botão CADASTRAR*/}  
-        <Text style={styles.preTextCadastrar}>Não tem uma conta?</Text>
-
-        <TouchableOpacity onPress={() => navigation.replace('Register')}>
-          <Text style={styles.textCadastrar}>Cadastre-se</Text>
-        </TouchableOpacity>
+        
+        <View style={styles.rodapeCadastroContainer}>
+          <Text style={styles.preTextCadastrar}>Não tem uma conta?</Text>
+          <TouchableOpacity onPress={() => navigation.replace('Register')}>
+            <Text style={styles.textCadastrar}>Cadastre-se</Text>
+          </TouchableOpacity>
+        </View>
        </View>
     </View>
   );
