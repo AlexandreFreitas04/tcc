@@ -2,16 +2,29 @@ import { auth, firestore } from '../config/firebase';
 import { collection, addDoc, Timestamp, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, arrayUnion, increment} 
 from 'firebase/firestore';
 
-export async function criarPartida(dadosForm: any, usuarioLogado: { uid: string; nome: string }) {
+export async function criarPartida(dadosForm: any) {
   
   try{
+
+    const usuario = auth.currentUser;
+    if(!usuario){
+      return {sucesso: false, mensagem: 'Usuário não autenticado. Faça o login novamente.'};
+    }
+
+    let nomeCriador = usuario.displayName || usuario.email || 'Organizador';
+
+    const userDoc = await getDoc(doc(firestore, 'usuarios', usuario.uid));
+    if(userDoc.exists() && userDoc.data().nome){
+      nomeCriador = userDoc.data().nome;
+    }
+
     const [dia, mes, ano] = dadosForm.data.split('/').map(Number);
     const [hora, minuto] = dadosForm.hora.split(':').map(Number);
     const dataHoraObjeto = new Date(ano, mes - 1, dia, hora, minuto);
 
     const novaPartida = {
-      criadorId: usuarioLogado.uid,
-      nomeCriador: usuarioLogado.nome,
+      criadorId: usuario.uid,
+      nomeCriador: nomeCriador,
       nome: dadosForm.nome,
       modalidade: dadosForm.modalidade,
       dataHora: Timestamp.fromDate(dataHoraObjeto),
@@ -26,8 +39,8 @@ export async function criarPartida(dadosForm: any, usuarioLogado: { uid: string;
       status: 'aberta',
       jogadoresConfirmados: [
         {
-          uid: usuarioLogado.uid,
-          nome: usuarioLogado.nome,
+          uid: usuario.uid,
+          nome: nomeCriador,
           confirmadoEm: Timestamp.now()
         }
       ],

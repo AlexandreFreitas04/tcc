@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { criarPartida } from '../controllers/partidaController';
@@ -21,6 +13,7 @@ interface CriarPartidaModalProps {
 export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModalProps) {
   const [nome, setNome] = useState('');
   const [local, setLocal] = useState('');
+  const [modalidade, setModalidade] = useState('Futebol Society');
   const [piso, setPiso] = useState('sintetico');
   const [vagasJogadores, setVagasJogadores] = useState('');
   const [vagasGoleiros, setVagasGoleiros] = useState('');
@@ -45,11 +38,11 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
 
   const apenasNumeros = (texto: string) => /^[0-9]*$/.test(texto);
 
-  // ✅ Agora a função cria no Firestore de verdade
   const handleCriarPartida = async () => {
     const dadosPartida = {
-      nome,
-      local,
+      nome: nome.trim(),
+      local: local.trim(),
+      modalidade,
       data: data.toLocaleDateString('pt-BR'),
       hora: hora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       piso,
@@ -83,6 +76,7 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
     setObservacoes('');
     setData(new Date());
     setHora(new Date());
+    setModalidade('Futebol Society');
   };
 
   return (
@@ -115,6 +109,20 @@ export default function CriarPartidaModal({ visible, onClose }: CriarPartidaModa
               placeholderTextColor="#666"
             />
 
+            <Picker
+                selectedValue={modalidade}
+                onValueChange={(v) => setModalidade(v)}
+                style={styles.modalPicker}
+              >
+              <Picker.Item label="Modalidade: Futebol Society" value="Futebol Society" />
+              <Picker.Item label="Modalidade: Futsal" value="Futsal" />
+              <Picker.Item label="Modalidade: Futebol de Campo" value="Futebol de Campo" />
+              <Picker.Item label="Modalidade: Vôlei" value="Vôlei" />
+              <Picker.Item label="Modalidade: Basquete" value="Basquete" />
+              <Picker.Item label="Modalidade: Beach Tennis" value="Beach Tennis" />
+            <Picker.Item label="Modalidade: Handebol" value="Handebol" />
+            </Picker>
+            
             <TouchableOpacity
               style={styles.modalDateTimePicker}
               onPress={() => setShowDatePicker(true)}
