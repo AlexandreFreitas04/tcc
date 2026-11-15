@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from './screens/Home';
+import TabNavigator from './navigation/tabNavigator';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import MinhasPartidas from './screens/MinhasPartidas';
@@ -17,7 +17,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={TabNavigator} />
         <Stack.Screen name="MinhasPartidas" component={MinhasPartidas} />
         <Stack.Screen name="EditarPartida" component={EditarPartida} />
         <Stack.Screen name="BuscarPartidas" component={BuscarPartidas} />

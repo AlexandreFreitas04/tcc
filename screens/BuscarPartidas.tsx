@@ -85,13 +85,6 @@ export default function BuscarPartidas() {
                     )}
                 />
             )}
-
-            <TouchableOpacity
-                style={styles.botaoVoltarPartidas}
-                onPress={() => navigation.goBack()}
-            >
-                <Text style={styles.textoBotaoVoltarPartidas}>Voltar</Text>
-            </TouchableOpacity>
         </View>
     )
 }

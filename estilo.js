@@ -519,4 +519,37 @@ export default StyleSheet.create({
     elevation: 10,
   },
 
+  floatingTabBar: {
+    position: 'absolute',
+    bottom: 28,
+    left: 20,
+    right: 20,
+    height: 66,
+    backgroundColor: '#FFF9F0',
+    borderRadius: 33, 
+    borderTopWidth: 0,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    paddingBottom: 0,
+  },
+
+  botaoCentralCriar: {
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: '#10B981',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    marginTop: 14,
+  },
+  tabBarItem: {
+    height: 66,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 0,
+  }
 });
